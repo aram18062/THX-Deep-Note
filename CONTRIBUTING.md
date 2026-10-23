@@ -60,20 +60,6 @@ Keep the seed the same between A/B comparisons, so you compare your change and n
 
 Tip: for faster iteration, temporarily set `SAMPLE_RATE = 48000` while experimenting. Rendering at the default 192 kHz is about four times slower. Remember to set it back before committing.
 
-## Code-only changes must not change the sound
-
-The script is deliberately written so that the default render is **reproducible bit for bit**. The order of random draws and the order of the floating-point operations both matter. A change that is meant to be a refactor, cleanup or performance improvement must produce **exactly the same samples** as before.
-
-Check this by hashing a render before and after your change. Run this once on the original code and once on your branch:
-
-```bash
-python -c "import hashlib, deep_note_master as dn; dn.SAMPLE_RATE = 48000; s = dn.render()[0]; print(hashlib.sha256(s.astype('<f4').tobytes()).hexdigest())"
-```
-
-The two hashes must match. In your pull request, say that you checked this.
-
-If your change *intentionally* alters the sound, say so clearly in the pull request and explain what changed and why.
-
 ## Coding guidelines
 
 Please keep to the style of the existing code:
